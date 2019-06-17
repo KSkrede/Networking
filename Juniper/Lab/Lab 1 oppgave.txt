@@ -1,0 +1,15 @@
+IP range:
+10.1.4.0/24
+
+10.2.4.0/24
+
+10.3.4.0/24
+
+10.4.4.0/24
+Begge switcher skal ha alle vlan
+Det skal være kobling mellom switcher på port ge-0/0/11 i begge
+Alle vlan skal fungere på begge switcher
+2 porter i hvert vlan (untatt Link vlan) på begge switcher (port 0-7)
+Begge switcher må kunne nås via SSH på mgmt vlan
+Port ge-0/0/10 på begge switcher skal være trunk, men om man kobler til en PC, så skal den havne i server VLAN
+Lag din egen bruker for login som super-user
