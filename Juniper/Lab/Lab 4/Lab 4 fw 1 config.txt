@@ -1,0 +1,59 @@
+set system host-name guttastemning-fw
+set system root-authentication encrypted-password "$5$/cW.1o5T$6LGjk.AwqY.URlyubuyf27a/yFsnxt1nrtnP0K1rgh5"
+set security nat source rule-set client-nat from zone arne
+set security nat source rule-set client-nat from zone kristian
+set security nat source rule-set client-nat from zone pamir
+set security nat source rule-set client-nat from zone thomas
+set security nat source rule-set client-nat to zone internet
+set security nat source rule-set client-nat rule nat-this-shit match source-address 0.0.0.0/0
+set security nat source rule-set client-nat rule nat-this-shit then source-nat interface
+set security policies global policy intra-traffic match source-address any
+set security policies global policy intra-traffic match destination-address any
+set security policies global policy intra-traffic match application junos-ping
+set security policies global policy intra-traffic match application junos-ssh
+set security policies global policy intra-traffic match from-zone thomas
+set security policies global policy intra-traffic match from-zone kristian
+set security policies global policy intra-traffic match from-zone arne
+set security policies global policy intra-traffic match from-zone pamir
+set security policies global policy intra-traffic match to-zone kristian
+set security policies global policy intra-traffic match to-zone thomas
+set security policies global policy intra-traffic match to-zone pamir
+set security policies global policy intra-traffic match to-zone arne
+set security policies global policy intra-traffic then permit
+set security policies global policy internet-traffic match source-address any
+set security policies global policy internet-traffic match destination-address any
+set security policies global policy internet-traffic match application any
+set security policies global policy internet-traffic match from-zone thomas
+set security policies global policy internet-traffic match from-zone kristian
+set security policies global policy internet-traffic match from-zone arne
+set security policies global policy internet-traffic match from-zone pamir
+set security policies global policy internet-traffic match to-zone internet
+set security policies global policy internet-traffic then permit
+set security zones security-zone thomas host-inbound-traffic system-services ssh
+set security zones security-zone thomas host-inbound-traffic system-services ping
+set security zones security-zone thomas interfaces ge-0/0/0.0
+set security zones security-zone kristian host-inbound-traffic system-services ssh
+set security zones security-zone kristian host-inbound-traffic system-services ping
+set security zones security-zone kristian interfaces ge-0/0/1.0
+set security zones security-zone arne host-inbound-traffic system-services ssh
+set security zones security-zone arne host-inbound-traffic system-services ping
+set security zones security-zone arne interfaces ge-0/0/2.0
+set security zones security-zone pamir host-inbound-traffic system-services ssh
+set security zones security-zone pamir host-inbound-traffic system-services ping
+set security zones security-zone pamir interfaces ge-0/0/3.0
+set security zones security-zone internet interfaces ge-0/0/7.0
+set interfaces ge-0/0/0 description thomas
+set interfaces ge-0/0/0 unit 0 family inet address 172.16.1.1/24
+set interfaces ge-0/0/1 description kristian
+set interfaces ge-0/0/1 unit 0 family inet address 172.16.2.1/24
+set interfaces ge-0/0/2 description arne
+set interfaces ge-0/0/2 unit 0 family inet address 172.16.3.1/24
+set interfaces ge-0/0/3 description pamir
+set interfaces ge-0/0/3 unit 0 family inet address 172.16.4.1/24
+set interfaces ge-0/0/7 description internet-access-isp
+set interfaces ge-0/0/7 unit 0 family inet address 172.19.27.253/23
+set routing-options static route 10.1.0.0/16 next-hop 172.16.3.2
+set routing-options static route 10.2.0.0/16 next-hop 172.16.4.2
+set routing-options static route 10.3.0.0/16 next-hop 172.16.1.2
+set routing-options static route 10.4.0.0/16 next-hop 172.16.2.2
+set routing-options static route 0.0.0.0/0 next-hop 172.19.26.1

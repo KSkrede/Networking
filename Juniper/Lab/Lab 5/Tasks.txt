@@ -1,0 +1,11 @@
+•	Delete alt av config på begge switcher
+•	Opprett begge switcher på nytt med verdier over
+•	Trunk i mellom switcher
+•	Bare ip adresse (IRB) på managament på begge switcher
+•	Sett IP på begge switcher i MGMT
+•	Default gateway til fw (som skal ha .1 adresse i MGMT)
+•	Koble til brannmur og la denne bli default gateway
+•	Koble brannmur til HP switch for å få internet tilgang
+•	Sett opp zone, regler og nat
+•	Lag dhcp scope for MGMT på fw
+ 

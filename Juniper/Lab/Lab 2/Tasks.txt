@@ -1,0 +1,5 @@
+•	Sw02 skal være default gateway for alle VLAN
+•	Sw02 skal være DHCP server for alle VLAN – Dele ut i subnet fra adresse 100-200
+•	Legge på litt standard config (kommer i egen mail) på begge switcher
+•	Sw02 port 9 skal være i Link vlan
+•	Port 9 kobles til Firewall (arne port 0, Pamir port 1, thomas port 2 og Kristian port 3)
