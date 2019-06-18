@@ -8,4 +8,4 @@
 •	Koble brannmur til HP switch for å få internet tilgang
 •	Sett opp zone, regler og nat
 •	Lag dhcp scope for MGMT på fw
- 
+*   Ssh på
