@@ -1,0 +1,76 @@
+Core Firewall
+
+#Users and name
+set system host-name kristian-fw01
+set system root-authentication encrypted-password "$5$2cFOsz2d$lkH5xlVltZXYgRACoqeL765QLFFpl1m.Jm6NYlp/sq4"
+set system login user skrede full-name mit-kristian-skrede
+set system login user skrede uid 2001
+set system login user skrede class super-user
+set system login user skrede authentication encrypted-password "$5$OoldwhDo$g/Xze1D6X355NIDw69uU6jfa3ct0cSJHzEBcD1vyaS7"
+
+#Logo
+set system login message "  _____ _                 _      _       _    \n / ____| |               | |    | |     | |   \n| (___ | | ___ __ ___  __| | ___| |_ ___| | __\n \\___ \\| |/ / '__/ _ \\/ _` |/ _ \\ __/ _ \\ |/ /\n ____) |   <| | |  __/ (_| |  __/ ||  __/   < \n|_____/|_|\\_\\_|  \\___|\\__,_|\\___|\\__\\___|_|\\_\\\n                                              "
+
+
+
+#Enabling services 
+set system services ssh
+set system services telnet
+
+
+#Ports
+set interfaces ge-0/0/0 description to-sw01
+set interfaces ge-0/0/0 unit 400 family inet address 172.4.4.1/24
+set interfaces ge-0/0/0 vlan-tagging
+set interfaces ge-0/0/0 unit 400 vlan-id 400
+
+
+set interfaces ge-0/0/7 description internet-access-isp
+set interfaces ge-0/0/7 unit 0 family inet address 172.19.27.254/23
+
+#Gateway
+set routing-options static route 0.0.0.0/0 next-hop 172.19.26.1
+
+
+
+
+#Nat and security zones 
+set security nat source rule-set client-nat from zone inside
+set security nat source rule-set client-nat to zone internet
+set security nat source rule-set client-nat rule nat-this-shit match source-address 0.0.0.0/0
+set security nat source rule-set client-nat rule nat-this-shit then source-nat interface
+set security policies global policy intra-traffic match source-address any
+set security policies global policy intra-traffic match destination-address any
+set security policies global policy intra-traffic match application junos-ping
+set security policies global policy intra-traffic match application junos-ssh
+set security policies global policy intra-traffic match from-zone inside
+set security policies global policy intra-traffic match from-zone internet
+
+set security policies global policy intra-traffic match to-zone inside
+set security policies global policy intra-traffic match to-zone internet
+
+
+
+set security policies global policy intra-traffic then permit
+set security policies global policy internet-traffic match source-address any
+set security policies global policy internet-traffic match destination-address any
+set security policies global policy internet-traffic match application any
+set security policies global policy internet-traffic match from-zone inside
+set security policies global policy internet-traffic match to-zone internet
+set security policies global policy internet-traffic then permit
+
+set security zones security-zone inside host-inbound-traffic system-services ssh
+set security zones security-zone inside host-inbound-traffic system-services dhcp
+set security zones security-zone inside host-inbound-traffic system-services ping
+set security zones security-zone inside interfaces ge-0/0/0.400
+set security zones security-zone internet interfaces ge-0/0/7
+
+#DHCP
+#mgmt-vlan 400
+set system services dhcp-local-server group dhcp-server-local interface ge-0/0/0.400
+set access address-assignment pool client-vlan-400 family inet network 172.4.4.0/24
+set access address-assignment pool client-vlan-400 family inet range range-400 low 172.4.4.100
+set access address-assignment pool client-vlan-400 family inet range range-400 high 172.4.4.200
+set access address-assignment pool client-vlan-400 family inet dhcp-attributes maximum-lease-time 1440
+set access address-assignment pool client-vlan-400 family inet dhcp-attributes name-server 8.8.8.8
+set access address-assignment pool client-vlan-400 family inet dhcp-attributes router 172.4.4.1
