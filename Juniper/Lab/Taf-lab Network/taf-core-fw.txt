@@ -3,17 +3,12 @@
 #Users and name
 set system host-name taf-core-fw01
 
-set system root-authentication encrypted-password "$5$2cFOsz2d$lkH5xlVltZXYgRACoqeL765QLFFpl1m.Jm6NYlp/sq4"
+
 set system login user skrede full-name mit-kristian-skrede
-set system login user skrede uid 2001
+set system login user skrede uid 2002
 set system login user skrede class super-user
 set system login user skrede authentication encrypted-password "$5$OoldwhDo$g/Xze1D6X355NIDw69uU6jfa3ct0cSJHzEBcD1vyaS7"
 
-#Jørgen user
-set system login user jorlan full-name mit-Jorgen-Lanesskog
-set system login user jorlan uid 2001
-set system login user jorlan class super-user
-set system login user jorlan authentication encrypted-password "$5$.3Q2QJFU$kSC.YZPbCfJwkgRH4dTGxVOuqxbSVLJd6Vxk3S0fCN/"
 
 
 #Logo

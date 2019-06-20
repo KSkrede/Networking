@@ -1,0 +1,26 @@
+Her er noen nøtter å løse:
+
+1)	Få brannmur til å svare på utside adresse
+2)	Konfigurere brannmur til å svare på ssh på utsideadressen
+3)	Konfigurere brannmur til å bare svare på ssh på utsideadressen fra hjemmeadressen din, samt RFC1918 adresser
+4)	Konfigurere vlan trunk mellom brannmur og switch
+5)	Konfigurere switch til å ha port i vlan 10, koble webserver til denne
+6)	Få webserver til å svare på ping fra innside adressen til brannmur
+7)	Konfigurere NAT og accessregler, slik at trafikk til utsideadressen på port 80 og port 443 blir rutet til innsideadressen til webserveren.
+8)	Konfigurere inspeksjon av http trafikken
+9)	Lag nytt vlan på brannmur/switch, sett en PC i dette nettet
+10)	Sett opp slik at det nye nettet kan nå DMZ og internett, uten at trafikk som kommer fra DMZ og internett kan gå til PC’en i dette nettet
+
+
+•	Få til at innside brukere kan surfe nettet (dynamisk NAT ut – selv om dette blir litt implisitt 😊)
+•	Sett opp SSL VPN for tilgang inn (2 brukere innbakt)
+•	Sette opp dynamisk VPN mot noe annet utstyr
+•	Sette opp statisk VPN mot noe annet utstyr
+•	Sette opp VPN mot Azure eller andre
+•	Lage ett gjestenett som er helt separat fra «produksjons lab» nettet (routing-instance / vrf)
+•	Lage DHCP scope på brannmur
+•	Få brannmur til å hente klokke fra en NTP server
+•	Få brannmur til å benytte en DNS server for navneoppslag
+•	Få brannmur til å skille mellom brukere på SSH login (ikke bare root), eventuelt radius (krever en radius server)
+•	Test ut brannmurregler og se forskjell mellom zone-based og global regler
+•	Sette sikkerhetsmekanismer på switcher (broadcast storm, spanning-tree, arp og dhcp inspection)
