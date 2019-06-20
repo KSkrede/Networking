@@ -1,0 +1,78 @@
+set system host-name taf-core-fw01
+set system root-authentication encrypted-password "$1$skm8d6CM$l0IMb1ScCd847xMHn                                                                                                                                                             h.RP."
+set system login message "  _____ _                 _      _       _    \n / ___                                                                                                                                                             _| |               | |    | |     | |   \n| (___ | | ___ __ ___  __| | ___| |_ _                                                                                                                                                             __| | __\n \\___ \\| |/ / '__/ _ \\/ _` |/ _ \\ __/ _ \\ |/ /\n ____) |   <| | |                                                                                                                                                               __/ (_| |  __/ ||  __/   < \n|_____/|_|\\_\\_|  \\___|\\__,_|\\___|\\__\\___|_                                                                                                                                                             |\\_\\\n                                              "
+set system login user jorlan full-name mit-Jorgen-Lanesskog
+set system login user jorlan uid 2001
+set system login user jorlan class super-user
+set system login user jorlan authentication encrypted-password "$1$tjzj/4Pe$hfQE                                                                                                                                                             QeN3taemwvvPjCFJD/"
+set system login user skrede full-name mit-kristian-skrede
+set system login user skrede uid 2002
+set system login user skrede class super-user
+set system login user skrede authentication encrypted-password "$1$LwV3QOvN$/3NL                                                                                                                                                             EwDav3eeqMbPGYtaN."
+set system login user thobor full-name mit-thomas-bordal
+set system login user thobor uid 2003
+set system login user thobor class super-user
+set system login user thobor authentication encrypted-password "$1$DG.bg7TM$pk0Ua03Ecijb6Lla9m7/41"
+set system services ssh
+set system services telnet
+set system services dhcp-local-server group dhcp-server-local interface ge-0/0/0.400
+set system services dhcp-local-server group dhcp-server-local interface vlan.100
+set chassis alarm management-ethernet link-down ignore
+set security nat source rule-set client-nat from zone inside
+set security nat source rule-set client-nat to zone internet
+set security nat source rule-set client-nat rule nat-this-shit match source-address 0.0.0.0/0
+set security nat source rule-set client-nat rule nat-this-shit then source-nat interface
+set security policies global policy intra-traffic match source-address any
+set security policies global policy intra-traffic match destination-address any
+set security policies global policy intra-traffic match application junos-ping
+set security policies global policy intra-traffic match application junos-ssh
+set security policies global policy intra-traffic match from-zone inside
+set security policies global policy intra-traffic match from-zone internet
+set security policies global policy intra-traffic match to-zone inside
+set security policies global policy intra-traffic match to-zone internet
+set security policies global policy intra-traffic then permit
+set security policies global policy internet-traffic match source-address any
+set security policies global policy internet-traffic match destination-address any
+set security policies global policy internet-traffic match application any
+set security policies global policy internet-traffic match from-zone inside
+set security policies global policy internet-traffic match to-zone internet
+set security policies global policy internet-traffic then permit
+set security zones security-zone inside host-inbound-traffic system-services ssh
+set security zones security-zone inside host-inbound-traffic system-services dhcp
+set security zones security-zone inside host-inbound-traffic system-services ping
+set security zones security-zone inside interfaces ge-0/0/0.400
+set security zones security-zone inside interfaces vlan.100
+set security zones security-zone internet host-inbound-traffic system-services ssh
+set security zones security-zone internet host-inbound-traffic system-services dhcp
+set security zones security-zone internet host-inbound-traffic system-services ping
+set security zones security-zone internet interfaces ge-0/0/7.0
+set interfaces ge-0/0/0 description to-sw01
+set interfaces ge-0/0/0 vlan-tagging
+set interfaces ge-0/0/0 unit 400 vlan-id 400
+set interfaces ge-0/0/0 unit 400 family inet address 172.4.4.1/24
+set interfaces ge-0/0/1 description windows-server
+set interfaces ge-0/0/1 unit 0 family ethernet-switching port-mode access
+set interfaces ge-0/0/1 unit 0 family ethernet-switching vlan members client-vlan-100
+set interfaces ge-0/0/7 description internet-access-isp
+set interfaces ge-0/0/7 unit 0 family inet address 62.97.245.90/27
+set interfaces vlan unit 100 family inet address 172.4.100.1/24
+set routing-options static route 0.0.0.0/0 next-hop 62.97.245.93
+set protocols lldp interface all
+set protocols lldp-med interface all
+set protocols rstp
+set protocols igmp-snooping vlan all
+set access address-assignment pool mgmt-vlan-400 family inet network 172.4.4.0/24
+set access address-assignment pool mgmt-vlan-400 family inet range range-400 low 172.4.4.100
+set access address-assignment pool mgmt-vlan-400 family inet range range-400 high 172.4.4.200
+set access address-assignment pool mgmt-vlan-400 family inet dhcp-attributes maximum-lease-time 1440
+set access address-assignment pool mgmt-vlan-400 family inet dhcp-attributes name-server 8.8.8.8
+set access address-assignment pool mgmt-vlan-400 family inet dhcp-attributes router 172.4.4.1
+set access address-assignment pool client-vlan-100 family inet network 172.4.100.1/24
+set access address-assignment pool client-vlan-100 family inet range range-100 low 172.4.100.100
+set access address-assignment pool client-vlan-100 family inet range range-100 high 172.4.100.200
+set access address-assignment pool client-vlan-100 family inet dhcp-attributes maximum-lease-time 1440
+set access address-assignment pool client-vlan-100 family inet dhcp-attributes name-server 8.8.8.8
+set access address-assignment pool client-vlan-100 family inet dhcp-attributes router 172.4.100.1
+set vlans client-vlan-100 vlan-id 100
+set vlans client-vlan-100 l3-interface vlan.100
+set vlans mgmt-vlan-400 vlan-id 400
